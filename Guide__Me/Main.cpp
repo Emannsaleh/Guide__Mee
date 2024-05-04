@@ -4,8 +4,26 @@ using namespace std;
 
 int main()
 {
-	///////////////
-	RoadMap* road = new RoadMap();
-  road->~RoadMap();
-	return 0;
+    ///
+    RoadMap* road = new RoadMap();
+
+    //cout << road->isComplete() << endl;
+
+    string source = "", destination = "";
+    char ch;
+    do
+    {
+        cout << "Enter the source:- " << endl;
+        cin >> source;
+        cout << "Enter the destination:- " << endl;
+        cin >> destination;
+        road->deleteTransportation(source, destination);
+        cout << "Do u want to delete a another transportation? (y/n)" << endl;
+        cin >> ch;
+    } while (ch == 'y' || ch == 'Y');
+
+
+    road->~RoadMap();
+
+    return 0;
 }
