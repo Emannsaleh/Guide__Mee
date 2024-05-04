@@ -35,7 +35,7 @@ private:
 
 public:
 	// constructors
-		
+
 	RoadMap();  // read map
 	int numOfLines; // FOR FILESTREAM
 
