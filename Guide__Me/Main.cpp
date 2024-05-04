@@ -7,6 +7,8 @@ int main()
     ///
     RoadMap* road = new RoadMap();
 
+    road->outputofpaths();
+
     //cout << road->isComplete() << endl;
 
     string source = "", destination = "";

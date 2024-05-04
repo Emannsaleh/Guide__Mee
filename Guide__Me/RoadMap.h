@@ -6,6 +6,7 @@
 #include<unordered_set>
 #include<unordered_map>
 #include<set>
+#include<queue>
 #include<cctype>
 #include<sstream>
 #include<vector>
@@ -33,6 +34,12 @@ private:
 	unordered_map<string, vector <pair<string, vector<Transportation>>>> _map;
 	vector<Transportation>vehicle;
 
+	string source, destination; double targetmoney;
+	unordered_map<string, bool>vis;
+	queue<pair<string, string>>path;
+	vector<pair<double, queue<pair<string, string>>>>routs;
+
+
 public:
 	// constructors
 
@@ -54,9 +61,12 @@ public:
 
 	void deleteTransportation(string source, string destination);
 
+	void ClearElqueue(queue<pair<string, string>>& path);
+	void ALLAVALIABLEPATHS(string node, double cost);
+	void outputofpaths();
+
 	// destructor
 
 	~RoadMap();
 
 };
-

@@ -386,3 +386,67 @@ bool RoadMap::isComplete()
     return (_map.size() == visited.size());
 
 }
+
+////////////////////////////////////////////////
+
+void RoadMap::ClearElqueue(queue<pair<string, string>>& path)
+{
+    while (!path.empty())  path.pop();
+}
+
+void RoadMap::ALLAVALIABLEPATHS(string node, double cost)
+{
+    vis[node] = 1;
+    for (auto child : _map[node])
+    {
+        if (!vis[child.first])
+        {
+            if (child.first != destination) /// node ---child
+            {
+                for (auto V : child.second)
+                {
+                    if (cost + V.price < targetmoney)
+                    {
+                        path.push({ child.first,V.vehicle });
+                        ALLAVALIABLEPATHS(child.first, cost + V.price);
+                    }
+                }
+            }
+            else
+            {
+                for (auto V : child.second)
+                {
+                    if (cost + V.price <= targetmoney)
+                    {
+                        path.push({ child.first,V.vehicle });
+                        routs.push_back({ cost + V.price ,path });
+                    }
+                }
+            }
+        }
+    }
+    ClearElqueue(path);
+}
+
+void RoadMap::outputofpaths()
+{
+    cout << "enter your source:  "; cin >> source;
+    cout << "enter your desination:  "; cin >> destination;
+    cout << "enter your targetmoney: "; cin >> targetmoney;
+
+    ALLAVALIABLEPATHS(source, 0);
+    sort(routs.begin(), routs.end());
+
+    for (auto r : routs)
+    {
+        cout << source << " ";
+        while (!r.second.empty()) // what was the wrong
+        {
+            cout << "(" << " " << r.second.front().second << " " << ")" << " ";
+            cout << r.second.front().first << " ";
+            r.second.pop();
+        }
+        cout << r.first << endl;
+    }
+
+}
