@@ -7,43 +7,25 @@ int main()
     ///
     RoadMap* road = new RoadMap();
 
-    //road->outputofpaths();
-    //road->Add();
-    road->dfs("cairo");
+    road->outputofpaths();
 
     //cout << road->isComplete() << endl;
 
     string source = "", destination = "";
     char ch;
-    //do
-    //{
-    //    cout << "Enter the source:- " << endl;
-    //    cin >> source;
-    //    cout << "Enter the destination:- " << endl;
-    //    cin >> destination;
-    //   
-    //    //road->deleteTransportation(source, destination);
-    //    cout << "Do u want to enter another s and d? (y/n)" << endl;
-    //    cin >> ch;
-    //    if (ch == 'no') {
-    //        road->bfs("cairo");
-    //    }
-    //} while (ch == 'y' || ch == 'Y');
-   /* cin >> ch;
-    while (ch != 'no') {
-        cin >> ch;
+    do
+    {
         cout << "Enter the source:- " << endl;
         cin >> source;
         cout << "Enter the destination:- " << endl;
         cin >> destination;
-        if (ch == 'no') {
-            road->bfs("cairo");
-        }
-  
-    }*/
+        road->deleteTransportation(source, destination);
+        cout << "Do u want to delete a another transportation? (y/n)" << endl;
+        cin >> ch;
+    } while (ch == 'y' || ch == 'Y');
 
 
-    //road->~RoadMap();
+    road->~RoadMap();
 
     return 0;
 }

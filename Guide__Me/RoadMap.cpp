@@ -14,7 +14,7 @@ Dahab - BeniSuef Microbus 200 Bus 315
     */
 
     fstream file;
-    file.open("Input2.txt", ios::in);
+    file.open("Input.txt", ios::in);
 
     int num; file >> num;
     file.ignore();
