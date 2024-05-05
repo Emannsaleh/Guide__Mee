@@ -32,12 +32,21 @@ private:
 	//      key=> name of source & value=> vector (transporation(source,destination,cost))  
 
 	unordered_map<string, vector <pair<string, vector<Transportation>>>> _map;
+	unordered_map<string, vector <string>> adjList;
+
 	vector<Transportation>vehicle;
 
 	string source, destination; double targetmoney;
 	unordered_map<string, bool>vis;
 	queue<pair<string, string>>path;
 	vector<pair<double, queue<pair<string, string>>>>routs;
+
+	//dfs
+	stack<string> s;
+	queue<string> dfsoutr;
+	//bfs
+	queue<string> bfs_queue;
+	queue<string> bfsout;
 
 
 public:
@@ -65,8 +74,13 @@ public:
 	void ALLAVALIABLEPATHS(string node, double cost);
 	void outputofpaths();
 
-	// destructor
 
+	void dfs(string);
+	void bfs(string);
+
+	void adjlist();
+
+	// destructor
 	~RoadMap();
 
 };

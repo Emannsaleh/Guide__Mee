@@ -14,7 +14,7 @@ Dahab - BeniSuef Microbus 200 Bus 315
     */
 
     fstream file;
-    file.open("Input.txt", ios::in);
+    file.open("Input2.txt", ios::in);
 
     int num; file >> num;
     file.ignore();
@@ -450,3 +450,72 @@ void RoadMap::outputofpaths()
     }
 
 }
+
+//dfs algo
+void RoadMap::dfs(string v) {
+    vis.clear();
+    s.push(v);
+    while (!s.empty()) {
+        string current = s.top();
+        s.pop();
+        if (!vis[current]) {
+
+            vis[current] = true;
+            dfsoutr.push(current);
+            //loops on the neigbors of the node 
+            for (auto it = _map[current].begin(); it != _map[current].end(); it++) {
+
+                if (!vis[it->first]) {
+                    s.push(it->first);
+
+                }
+            }
+        }
+    }
+    while (!dfsoutr.empty()) {
+        cout << dfsoutr.front() << endl;
+        dfsoutr.pop();
+    }
+}
+
+//bfs algo
+void RoadMap::bfs(string v) {
+    //uses queue to pop from first as it wants to pop the neighbor of the first node
+    vis.clear();
+    bfs_queue.push(v);
+    while (!bfs_queue.empty()) {
+        string current = bfs_queue.front();
+        bfs_queue.pop();
+        if (!vis[current]) {
+            vis[current] = true;
+            bfsout.push(current);
+            for (auto it = _map[current].begin(); it != _map[current].end(); it++) {
+                if (!vis[it->first]) {
+                    bfs_queue.push(it->first);
+                }
+
+            }
+        }
+    }
+    while (!bfsout.empty()) {
+        cout << bfsout.front() << endl;
+        bfsout.pop();
+    }
+    
+}
+
+
+//void RoadMap::adjlist() {
+//    for (auto& lis : _map) {
+//        string source = lis.first;
+//        for (auto& dist : lis.second) {
+//            string distination = dist.first;
+//
+//            adjList[source].push_back(distination);
+//            adjList[distination].push_back(source);
+//
+//
+//        }
+//
+//    }
+//}
