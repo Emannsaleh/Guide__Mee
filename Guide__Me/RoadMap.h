@@ -27,7 +27,7 @@ struct Transportation
 class RoadMap
 {
 
-private:
+public:
 	// datamembers
 	//      key=> name of source & value=> vector (transporation(source,destination,cost))  
 
@@ -48,7 +48,7 @@ private:
 	queue<string> bfsout;
 
 
-public:
+
 	// constructors
 
 	RoadMap();  // read map
