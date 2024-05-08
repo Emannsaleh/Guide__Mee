@@ -19,13 +19,11 @@ Dahab - BeniSuef Microbus 200 Bus 315
     int num; file >> num;
     file.ignore();
 
-    numOfLines = num;
+    string line;
 
-    while (num--)
+    while (getline(file, line))
     {
-        string line, source, destination, strPrice;
-
-        getline(file, line);       // read the whole line
+        string source, destination, strPrice;
         istringstream iss(line);
 
         //cout << line << " " << num << endl;
@@ -91,7 +89,7 @@ RoadMap::~RoadMap()
     fstream file;
     file.open("Input.txt", ios::out);
 
-    file << numOfLines << endl;
+    file << _map.size()<< endl;
 
     set<pair<string, string>> isPrinted;
 
