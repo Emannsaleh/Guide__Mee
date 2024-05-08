@@ -7,7 +7,9 @@ int main()
     ///
     RoadMap* road = new RoadMap();
 
-  //  road->outputofpaths();
+   road->outputofpaths();
+   road->outputofpaths();
+
    
     road->bfs("Asyut");
  //   cout << 99 << endl;

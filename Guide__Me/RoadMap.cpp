@@ -428,6 +428,8 @@ void RoadMap::ALLAVALIABLEPATHS(string node, double cost)
 
 void RoadMap::outputofpaths()
 {
+  //  vis.clear();
+    
     cout << "enter your source:  "; cin >> source;
     cout << "enter your desination:  "; cin >> destination;
     cout << "enter your targetmoney: "; cin >> targetmoney;
