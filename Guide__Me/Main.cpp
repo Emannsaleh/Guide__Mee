@@ -7,10 +7,14 @@ int main()
     ///
     RoadMap* road = new RoadMap();
 
-    road->outputofpaths();
+  //  road->outputofpaths();
+   
+    road->bfs("Asyut");
+ //   cout << 99 << endl;
+    road->dfs("Cairo");
 
     //cout << road->isComplete() << endl;
-
+    /*
     string source = "", destination = "";
     char ch;
     do
@@ -24,7 +28,7 @@ int main()
         cin >> ch;
     } while (ch == 'y' || ch == 'Y');
 
-
+    */
     road->~RoadMap();
 
     return 0;

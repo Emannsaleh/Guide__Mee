@@ -32,7 +32,6 @@ private:
 	//      key=> name of source & value=> vector (transporation(source,destination,cost))  
 
 	unordered_map<string, vector <pair<string, vector<Transportation>>>> _map;
-	unordered_map<string, vector <string>> adjList;
 
 	vector<Transportation>vehicle;
 
@@ -77,8 +76,6 @@ public:
 
 	void dfs(string);
 	void bfs(string);
-
-	void adjlist();
 
 	// destructor
 	~RoadMap();
