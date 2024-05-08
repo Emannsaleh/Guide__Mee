@@ -1,5 +1,5 @@
 #include "RoadMap.h"
-using namespace std;
+
 //////////////////////////////////////////////
 RoadMap::RoadMap()
 {
@@ -53,8 +53,8 @@ Dahab - BeniSuef Microbus 200 Bus 315
         }
 
         // finally we add it.
-        map[source].push_back({ destination,trans });
-        map[destination].push_back({ source,trans });
+        _map[source].push_back({ destination,trans });
+        _map[destination].push_back({ source,trans });
 
     }
 
@@ -95,12 +95,12 @@ RoadMap::~RoadMap()
 
     set<pair<string, string>> isPrinted;
 
-    for (unordered_map<string, vector <pair<string, vector<Transportation>>>>::iterator start = map.begin(); start != map.end(); start++)
+    for (unordered_map<string, vector <pair<string, vector<Transportation>>>>::iterator start = _map.begin(); start != _map.end(); start++)
     {
 
         //		file << start->first << " - ";   //source - //
 
-        for (unordered_map<string, vector <pair<string, vector<Transportation>>>>::iterator dest = map.begin(); dest != map.end(); dest++)
+        for (unordered_map<string, vector <pair<string, vector<Transportation>>>>::iterator dest = _map.begin(); dest != _map.end(); dest++)
         {
 
             for (int i = 0; i < start->second.size(); i++)
@@ -138,11 +138,11 @@ void RoadMap::addEdge(string src, string dest, string method, int price) {
     // undirected graph
     vector<Transportation> transVector;
     transVector.push_back(Transportation(method, price));
-    map[src].push_back(make_pair(dest, transVector));
-    map[dest].push_back(make_pair(src, transVector));
+    _map[src].push_back(make_pair(dest, transVector));
+    _map[dest].push_back(make_pair(src, transVector));
 }
 void RoadMap::addTransportation(string src, string dest, string method, int price) {
-    for (auto& pair : map[src]) { // checks if the edge already exists
+    for (auto& pair : _map[src]) { // checks if the edge already exists
         if (ignoreCaseInsensitive(pair.first, dest)) { // checks if the dest entered by the user exists
             for (auto& transPair : pair.second) {
                 if (ignoreCaseInsensitive(transPair.vehicle, method)) { // checks if the method exits
@@ -196,7 +196,7 @@ void RoadMap::Add() {
 void RoadMap::displayGraph() {
     unordered_map<string, vector<pair<string, vector<Transportation>>>>::iterator it;
     cout << "Main map: \n";
-    for (it = map.begin(); it != map.end(); ++it) {
+    for (it = _map.begin(); it != _map.end(); ++it) {
         cout << "City: " << it->first << " -> \n";
         for (auto& pair : it->second) {
             cout << pair.first << " [";
@@ -251,8 +251,8 @@ string RoadMap::toLower(string s) {
 
 void RoadMap::updateTransportation(const string& source, const string& destination, const string& vehicle, double newPrice) {
     // Check if the source exists in the map
-    auto sourceIter = map.find(source);
-    if (sourceIter == map.end()) {
+    auto sourceIter = _map.find(source);
+    if (sourceIter == _map.end()) {
         cout << "Source city not found in the map." << endl;
         return;
     }
@@ -279,12 +279,31 @@ void RoadMap::updateTransportation(const string& source, const string& destinati
 }
 
 /////////////////////////////////////////////////
-void RoadMap::deleteTransportation(string source, string destination, string transport)
+void RoadMap::deleteTransportation(string source, string destination)
 {
+    string transport = "";
+    while (true)
+    {
         // Display all edges
-        auto sourceCity = map.find(source);
-        if (sourceCity != map.end())
+        auto sourceCity = _map.find(source);
+        if (sourceCity != _map.end())
         {
+            for (auto& desCity : sourceCity->second)
+            {
+                if (desCity.first == destination && !desCity.second.empty())
+                {
+                    for (auto trans = desCity.second.begin(); trans != desCity.second.end(); trans++)
+                    {
+                        cout << "Edge from " << source << " to " << destination << " : vehicle = " << trans->vehicle << " : price = " << trans->price << endl;
+                    }
+                }
+            }
+
+            cout << "Choose one Transportation to Delete or enter 'q' to quit:- " << endl;
+            cin >> transport;
+
+            if (transport == "q") return;
+
             // Delete the edge from the source node
             for (auto& desCity : sourceCity->second)
             {
@@ -303,8 +322,8 @@ void RoadMap::deleteTransportation(string source, string destination, string tra
             }
 
             // Delete the edge from the destination node
-            sourceCity = map.find(destination);
-            if (sourceCity != map.end())
+            sourceCity = _map.find(destination);
+            if (sourceCity != _map.end())
             {
                 for (auto& desCity : sourceCity->second)
                 {
@@ -323,6 +342,12 @@ void RoadMap::deleteTransportation(string source, string destination, string tra
                 }
             }
         }
+        else
+        {
+            cout << "There is no city with this name " << endl;
+            break;
+        }
+    }
 }
 ////////////////////////////////////////////////
 bool RoadMap::isComplete()
@@ -330,7 +355,7 @@ bool RoadMap::isComplete()
     stack<string> explore;
     unordered_set<string> visited;
 
-    explore.push(map.begin()->first);
+    explore.push(_map.begin()->first);
 
     while (!explore.empty())
     {
@@ -344,7 +369,7 @@ bool RoadMap::isComplete()
 
             //cout << curr_city << endl;
 
-            for (vector <pair<string, vector<Transportation>>>::iterator start = map[curr_city].begin(); start != map[curr_city].end(); start++)
+            for (vector <pair<string, vector<Transportation>>>::iterator start = _map[curr_city].begin(); start != _map[curr_city].end(); start++)
             {
                 if ((visited.find(start->first) == visited.end()) && (start->second.size() != 0))
                 {
@@ -358,7 +383,7 @@ bool RoadMap::isComplete()
     //cout << visited.size() << endl;
 
 
-    return (map.size() == visited.size());
+    return (_map.size() == visited.size());
 
 }
 
@@ -372,7 +397,7 @@ void RoadMap::ClearElqueue(queue<pair<string, string>>& path)
 void RoadMap::ALLAVALIABLEPATHS(string node, double cost)
 {
     vis[node] = 1;
-    for (auto child : map[node])
+    for (auto child : _map[node])
     {
         if (!vis[child.first])
         {
@@ -426,6 +451,7 @@ void RoadMap::outputofpaths()
 
 }
 
+////////////////////////////////////////////////////////////////////////////////////////
 //dfs algo
 void RoadMap::dfs(string v) {
     vis.clear();
@@ -438,9 +464,9 @@ void RoadMap::dfs(string v) {
             vis[current] = true;
             dfsoutr.push(current);
             //loops on the neigbors of the node 
-            for (auto it = map[current].begin(); it != map[current].end(); it++) {
+            for (auto it = _map[current].begin(); it != _map[current].end(); it++) {
 
-                if (!vis[it->first]) {
+                if (!vis[it->first] && it->second.size()!=0) {
                     s.push(it->first);
 
                 }
@@ -464,8 +490,8 @@ void RoadMap::bfs(string v) {
         if (!vis[current]) {
             vis[current] = true;
             bfsout.push(current);
-            for (auto it = map[current].begin(); it != map[current].end(); it++) {
-                if (!vis[it->first]) {
+            for (auto it = _map[current].begin(); it != _map[current].end(); it++) {
+                if (!vis[it->first] && it->second.size()!=0) {
                     bfs_queue.push(it->first);
                 }
 
@@ -476,7 +502,7 @@ void RoadMap::bfs(string v) {
         cout << bfsout.front() << endl;
         bfsout.pop();
     }
-
+    
 }
 
 
