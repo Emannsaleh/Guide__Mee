@@ -451,6 +451,7 @@ void RoadMap::outputofpaths()
 
 }
 
+////////////////////////////////////////////////////////////////////////////////////////
 //dfs algo
 void RoadMap::dfs(string v) {
     vis.clear();
@@ -465,7 +466,7 @@ void RoadMap::dfs(string v) {
             //loops on the neigbors of the node 
             for (auto it = _map[current].begin(); it != _map[current].end(); it++) {
 
-                if (!vis[it->first]) {
+                if (!vis[it->first] && it->second.size()!=0) {
                     s.push(it->first);
 
                 }
@@ -490,7 +491,7 @@ void RoadMap::bfs(string v) {
             vis[current] = true;
             bfsout.push(current);
             for (auto it = _map[current].begin(); it != _map[current].end(); it++) {
-                if (!vis[it->first]) {
+                if (!vis[it->first] && it->second.size()!=0) {
                     bfs_queue.push(it->first);
                 }
 
