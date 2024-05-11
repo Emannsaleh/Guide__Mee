@@ -136,21 +136,24 @@ RoadMap::~RoadMap()
 void RoadMap::addEdge(string src, string dest, string method, double price) {
 
     // undirected graph
-   /* vector<Transportation> transVector;
-    transVector.push_back(Transportation(method, price));
-    map[src].push_back(make_pair(dest, transVector));
-    map[dest].push_back(make_pair(src, transVector));
-   */
+    bool existEdge = false;
+    auto sourceCity = map.find(src);
 
-    for (vector <pair<string, vector<Transportation>>>::iterator destOf_source = map[src].begin(); destOf_source != map[src].end(); destOf_source++)
-    {
-        if (destOf_source->first == dest)
-        {
-            destOf_source->second.push_back( {method,price} );
+    auto& sourceDestinations = sourceCity->second;
+    for (auto& destinationPair : sourceDestinations) {
+        if (compare(destinationPair.first, dest)) { // Check if the destination exists
+            destinationPair.second.push_back({ method, price });
+            existEdge = true;
         }
     }
 
+    if (existEdge == false) {
+        vector<Transportation> transVector;
+        transVector.push_back(Transportation(method, price));
+        map[src].push_back(make_pair(dest, transVector));
+    }
 }
+
 void RoadMap::addTransportation(string src, string dest, string method, double price) {
     auto sourceCity = map.find(src);
     auto destinationCity = map.find(dest);
@@ -168,9 +171,9 @@ void RoadMap::addTransportation(string src, string dest, string method, double p
     // Check forward direction: source to destination
     auto& sourceDestinations = sourceCity->second;
     for (auto& destinationPair : sourceDestinations) {
-        if (ignoreCaseInsensitive(destinationPair.first, dest)) { // Check if the destination exists
+        if (compare(destinationPair.first, dest)) { // Check if the destination exists
             for (auto& transPair : destinationPair.second) {
-                if (ignoreCaseInsensitive(transPair.vehicle, method)) { // Check if the method exists
+                if (compare(transPair.vehicle, method)) { // Check if the method exists
                     existsForward = true;
                     break;
                 }
@@ -182,9 +185,9 @@ void RoadMap::addTransportation(string src, string dest, string method, double p
     // Check backward direction: destination to source
     auto& destDestinations = destinationCity->second;
     for (auto& destinationPair : destDestinations) {
-        if (ignoreCaseInsensitive(destinationPair.first, src)) { // Check if the source exists
+        if (compare(destinationPair.first, src)) { // Check if the source exists
             for (auto& transPair : destinationPair.second) {
-                if (ignoreCaseInsensitive(transPair.vehicle, method)) { // Check if the method exists
+                if (compare(transPair.vehicle, method)) { // Check if the method exists
                     existsBackward = true;
                     break;
                 }
@@ -210,7 +213,7 @@ void RoadMap::addTransportation(string src, string dest, string method, double p
     QMessageBox::information(nullptr, "Information", "New transportation has been added!");
 }
 
-bool RoadMap::ignoreCaseInsensitive(string str1, string str2) { // compares two strings
+bool RoadMap::compare(string str1, string str2) { // compares two strings
     if (str1.length() != str2.length()) {
         return false; // If lengths are different, strings are not equal
     }
