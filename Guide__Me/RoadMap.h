@@ -65,7 +65,7 @@ public:
 
 	void addEdge(string src, string dest, string method, double price);
 	void addTransportation(string src, string dest, string method, double price);
-	bool ignoreCaseInsensitive(string str1, string str2);
+	bool compare(string str1, string str2);
 	string toLower(string s);
 	
 	//void displayGraph();
